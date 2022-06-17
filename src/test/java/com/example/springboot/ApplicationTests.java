@@ -27,12 +27,5 @@ class ApplicationTests {
 	}
 
 
-	@Test
-	void testUserName() throws URISyntaxException {
-		String url = "http://localhost:"+ randomPort +"/username";
-		URI uri = new URI(url);
-		String username = testRestTemplate.getForObject(uri, String.class);
-		Assert.assertEquals(username, "Zeynep");
-	}
 
 }
