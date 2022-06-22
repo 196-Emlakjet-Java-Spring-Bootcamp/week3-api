@@ -23,8 +23,9 @@ public class QueueController {
 
     @PostMapping("/event")
     public String sendMessage(@RequestBody String event){
-        rabbitTemplate.convertAndSend(this.queue.getName(), event);
-        return "Event added.";
+        throw new RuntimeException("Bir seyler oldu.");
+        //rabbitTemplate.convertAndSend(this.queue.getName(), event);
+        //return "Event added.";
     }
 
 
