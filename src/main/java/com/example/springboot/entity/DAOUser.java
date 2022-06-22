@@ -1,12 +1,10 @@
 package com.example.springboot.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public class DAOUser {
 
     @Id
     @Column(name = "id", nullable = false)
@@ -14,7 +12,7 @@ public class UserEntity {
     private Long id;
 
     @Column
-    private String userName;
+    private String username;
 
     @Column
     private String email;
@@ -30,12 +28,12 @@ public class UserEntity {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
     public String getEmail() {

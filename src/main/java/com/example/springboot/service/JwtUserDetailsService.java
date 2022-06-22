@@ -1,10 +1,9 @@
 package com.example.springboot.service;
 
-import java.util.ArrayList;
-
-import com.example.springboot.dao.UserRepository;
+import com.example.springboot.dao.UserDao;
 import com.example.springboot.dto.UserDTO;
-import com.example.springboot.entity.UserEntity;
+import com.example.springboot.entity.DAOUser;
+import com.example.springboot.helper.UserDTOHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,30 +11,33 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserDao userDao;
 
     @Autowired
     private PasswordEncoder bcryptEncoder;
 
+    @Autowired
+    private UserDTOHelper userHelper;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByUserName(username);
+        DAOUser user = userDao.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
-        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 new ArrayList<>());
     }
 
-    public UserEntity save(UserDTO user) {
-        UserEntity newUser = new UserEntity();
-        newUser.setUserName(user.getUserName());
+    public DAOUser save(UserDTO user) {
+        DAOUser newUser = userHelper.convertToEntity(user);
         newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
-        return userRepository.save(newUser);
+        return userDao.save(newUser);
     }
-
 }
